@@ -1,0 +1,22 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.9
+    working_directory: /go/src/github.com/suzuito/common-herror
+    steps:
+      - checkout
+      - run: sudo apt-get install graphviz
+      - run: go get -u golang.org/x/lint/golint
+      - run: curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+      - run: dep ensure
+      - run: dep status
+      - run: mkdir /tmp/artifacts
+      - run: golint -set_exit_status
+      - run: ./test
+      - run: dep status -dot | dot -T png > /tmp/artifacts/dependencies.png
+      - store_artifacts:
+          path: /tmp/artifacts
