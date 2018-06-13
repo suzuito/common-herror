@@ -107,3 +107,36 @@ func NewUnauthorizedBadAccessToken(err error) HTTPError {
 		err:            err,
 	}
 }
+
+// NewBindJSONError ...
+func NewBindJSONError(err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           http.StatusBadRequest,
+		publicMessage:  "Cannot bind body",
+		privateMessage: "Cannot bind body",
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
+
+// NewInvalidParameterError ...
+func NewInvalidParameterError(pri, pub string, err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           http.StatusBadRequest,
+		publicMessage:  pri,
+		privateMessage: pub,
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
+
+// NewConflictError ...
+func NewConflictError(pri, pub string, err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           http.StatusConflict,
+		publicMessage:  pri,
+		privateMessage: pub,
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
