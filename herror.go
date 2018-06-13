@@ -96,3 +96,14 @@ func NewInternalServerError(publicMessage, privateMessage string, err error) HTT
 		err:            err,
 	}
 }
+
+// NewUnauthorizedBadAccessToken ...
+func NewUnauthorizedBadAccessToken(err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           http.StatusUnauthorized,
+		publicMessage:  "Bad access token",
+		privateMessage: "Bad access token",
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
