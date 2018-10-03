@@ -23,6 +23,7 @@ type HTTPError interface {
 	Is4XX() bool
 	Error() error
 	Call() string
+	String() string
 }
 
 // HTTPErrorImpl ...
@@ -73,6 +74,14 @@ func (err HTTPErrorImpl) Error() error {
 // Call ...
 func (err HTTPErrorImpl) Call() string {
 	return err.call
+}
+
+// String ...
+func (err HTTPErrorImpl) String() string {
+	return fmt.Sprintf(
+		"Private[%s] Public[%s] Code[%d] Call[%s] Err[%+v]",
+		err.privateMessage, err.publicMessage, err.code, err.call, err.err,
+	)
 }
 
 // NewNotFound ...
@@ -136,6 +145,17 @@ func NewConflictError(pri, pub string, err error) HTTPError {
 		code:           http.StatusConflict,
 		publicMessage:  pri,
 		privateMessage: pub,
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
+
+// NewLoginError ...
+func NewLoginError(pri string, err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           http.StatusForbidden,
+		publicMessage:  "Login process is failed",
+		privateMessage: pri,
 		call:           getCallInfo(),
 		err:            err,
 	}
