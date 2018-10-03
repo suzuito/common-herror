@@ -75,3 +75,13 @@ func TestConflictError(t *testing.T) {
 	assert.Regexp(t, `^.+herror_test\.go:70$`, herr.Call())
 	assert.Nil(t, herr.Error())
 }
+
+func TestLoginError(t *testing.T) {
+	herr := NewLoginError("pri", nil)
+	assert.Equal(t, 403, herr.Code())
+	assert.Equal(t, "Login process is failed", herr.PublicMessage())
+	assert.Equal(t, "pri", herr.PrivateMessage())
+	assert.True(t, herr.Is4XX())
+	assert.Regexp(t, `^.+herror_test\.go:80$`, herr.Call())
+	assert.Nil(t, herr.Error())
+}
