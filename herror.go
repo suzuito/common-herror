@@ -15,6 +15,13 @@ func getCallInfo() string {
 	return fmt.Sprintf("unknown:unknown")
 }
 
+const (
+	// StatusAgentExpired ...
+	StatusAgentExpired = 450
+	// StatusLoginExpired ...
+	StatusLoginExpired = 451
+)
+
 // HTTPError ...
 type HTTPError interface {
 	Code() int
@@ -155,6 +162,28 @@ func NewLoginError(pri string, err error) HTTPError {
 	return HTTPErrorImpl{
 		code:           http.StatusForbidden,
 		publicMessage:  "Login process is failed",
+		privateMessage: pri,
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
+
+// NewAgentExpiredError ...
+func NewAgentExpiredError(pri string, err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           StatusAgentExpired,
+		publicMessage:  "Agent token is expired",
+		privateMessage: pri,
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
+
+// NewLoginExpiredError ...
+func NewLoginExpiredError(pri string, err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           StatusLoginExpired,
+		publicMessage:  "Login token is expired",
 		privateMessage: pri,
 		call:           getCallInfo(),
 		err:            err,

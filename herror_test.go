@@ -76,12 +76,32 @@ func TestConflictError(t *testing.T) {
 	assert.Nil(t, herr.Error())
 }
 
+func TestAgentExpiredError(t *testing.T) {
+	herr := NewAgentExpiredError("pri", nil)
+	assert.Equal(t, 450, herr.Code())
+	assert.Equal(t, "pri", herr.PrivateMessage())
+	assert.Equal(t, "Agent token is expired", herr.PublicMessage())
+	assert.True(t, herr.Is4XX())
+	assert.Regexp(t, `^.+herror_test\.go:80$`, herr.Call())
+	assert.Nil(t, herr.Error())
+}
+
 func TestLoginError(t *testing.T) {
 	herr := NewLoginError("pri", nil)
 	assert.Equal(t, 403, herr.Code())
 	assert.Equal(t, "Login process is failed", herr.PublicMessage())
 	assert.Equal(t, "pri", herr.PrivateMessage())
 	assert.True(t, herr.Is4XX())
-	assert.Regexp(t, `^.+herror_test\.go:80$`, herr.Call())
+	assert.Regexp(t, `^.+herror_test\.go:90$`, herr.Call())
+	assert.Nil(t, herr.Error())
+}
+
+func TestLoginExpiredError(t *testing.T) {
+	herr := NewLoginExpiredError("pri", nil)
+	assert.Equal(t, 451, herr.Code())
+	assert.Equal(t, "pri", herr.PrivateMessage())
+	assert.Equal(t, "Login token is expired", herr.PublicMessage())
+	assert.True(t, herr.Is4XX())
+	assert.Regexp(t, `^.+herror_test\.go:100$`, herr.Call())
 	assert.Nil(t, herr.Error())
 }
