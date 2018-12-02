@@ -189,3 +189,14 @@ func NewLoginExpiredError(pri string, err error) HTTPError {
 		err:            err,
 	}
 }
+
+// NewUnautorizedError ...
+func NewUnautorizedError(pub, pri string, err error) HTTPError {
+	return HTTPErrorImpl{
+		code:           http.StatusUnauthorized,
+		publicMessage:  pub,
+		privateMessage: pri,
+		call:           getCallInfo(),
+		err:            err,
+	}
+}
