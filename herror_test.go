@@ -105,3 +105,13 @@ func TestLoginExpiredError(t *testing.T) {
 	assert.Regexp(t, `^.+herror_test\.go:100$`, herr.Call())
 	assert.Nil(t, herr.Error())
 }
+
+func TestUnauthorizedError(t *testing.T) {
+	herr := NewUnautorizedError("pub", "pri", nil)
+	assert.Equal(t, 401, herr.Code())
+	assert.Equal(t, "pri", herr.PrivateMessage())
+	assert.Equal(t, "pub", herr.PublicMessage())
+	assert.True(t, herr.Is4XX())
+	assert.Regexp(t, `^.+herror_test\.go:110$`, herr.Call())
+	assert.Nil(t, herr.Error())
+}
