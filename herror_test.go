@@ -107,7 +107,7 @@ func TestLoginExpiredError(t *testing.T) {
 }
 
 func TestUnauthorizedError(t *testing.T) {
-	herr := NewUnautorizedError("pub", "pri", nil)
+	herr := NewUnauthorizedError("pub", "pri", nil)
 	assert.Equal(t, 401, herr.Code())
 	assert.Equal(t, "pri", herr.PrivateMessage())
 	assert.Equal(t, "pub", herr.PublicMessage())
