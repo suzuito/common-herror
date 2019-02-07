@@ -6,8 +6,7 @@ import (
 	"runtime"
 )
 
-func getCallInfo() string {
-	skip := 2
+func getCallInfo(skip int) string {
 	_, file, line, ok := runtime.Caller(skip)
 	if ok {
 		return fmt.Sprintf("%s:%d", file, line)
@@ -49,7 +48,7 @@ func NewHTTPErrorImpl(code int, publicMessage, privateMessage string, err error)
 		privateMessage: privateMessage,
 		publicMessage:  publicMessage,
 		err:            err,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 	}
 }
 
@@ -97,7 +96,7 @@ func NewNotFound(publicMessage, privateMessage string, err error) HTTPError {
 		code:           http.StatusNotFound,
 		publicMessage:  fmt.Sprintf("NotFound: %s", publicMessage),
 		privateMessage: privateMessage,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -108,7 +107,7 @@ func NewInternalServerError(publicMessage, privateMessage string, err error) HTT
 		code:           http.StatusInternalServerError,
 		publicMessage:  fmt.Sprintf("InternalServerError: %s", publicMessage),
 		privateMessage: privateMessage,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -119,7 +118,7 @@ func NewUnauthorizedBadAccessToken(err error) HTTPError {
 		code:           http.StatusUnauthorized,
 		publicMessage:  "Bad access token",
 		privateMessage: "Bad access token",
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -130,7 +129,7 @@ func NewBindJSONError(err error) HTTPError {
 		code:           http.StatusBadRequest,
 		publicMessage:  "Cannot bind body",
 		privateMessage: "Cannot bind body",
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -141,7 +140,7 @@ func NewInvalidParameterError(pri, pub string, err error) HTTPError {
 		code:           http.StatusBadRequest,
 		publicMessage:  pri,
 		privateMessage: pub,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -152,7 +151,7 @@ func NewConflictError(pri, pub string, err error) HTTPError {
 		code:           http.StatusConflict,
 		publicMessage:  pri,
 		privateMessage: pub,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -163,7 +162,7 @@ func NewLoginError(pri string, err error) HTTPError {
 		code:           http.StatusForbidden,
 		publicMessage:  "Login process is failed",
 		privateMessage: pri,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -174,7 +173,7 @@ func NewAgentExpiredError(pri string, err error) HTTPError {
 		code:           StatusAgentExpired,
 		publicMessage:  "Agent token is expired",
 		privateMessage: pri,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -185,7 +184,7 @@ func NewLoginExpiredError(pri string, err error) HTTPError {
 		code:           StatusLoginExpired,
 		publicMessage:  "Login token is expired",
 		privateMessage: pri,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
@@ -196,7 +195,7 @@ func NewUnauthorizedError(pub, pri string, err error) HTTPError {
 		code:           http.StatusUnauthorized,
 		publicMessage:  pub,
 		privateMessage: pri,
-		call:           getCallInfo(),
+		call:           getCallInfo(2),
 		err:            err,
 	}
 }
